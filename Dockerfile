@@ -1,14 +1,14 @@
-# Use an OpenJDK image (choose the version you need)
-FROM openjdk:11-jre-slim
+# Use the official Tomcat image
+FROM tomcat:9.0
 
-# Set the working directory inside the container
-WORKDIR /app
+# Remove default apps (optional)
+RUN rm -rf /usr/local/tomcat/webapps/*
 
-# Copy the .war file into the container
-COPY openai-ui.war /app/openai-ui.war
+# Copy the WAR file to the Tomcat webapps directory
+COPY openai-ui.war /usr/local/tomcat/webapps/
 
-# Expose the port the app will run on (usually 8080 for Java apps)
+# Expose the port
 EXPOSE 8080
 
-# Command to run the application
-CMD ["java", "-jar", "openai-ui.war"]
+# Run Tomcat server
+CMD ["catalina.sh", "run"]
